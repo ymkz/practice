@@ -1,0 +1,6 @@
+# see https://redocly.com/docs/cli/configuration/
+apis:
+  express-base@latest:
+    root: ./specs/openapi.yaml
+extends:
+  - recommended

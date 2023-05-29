@@ -1,0 +1,9 @@
+dist
+node_modules
+src/generated
+package-lock.json
+.eslintrc.cjs
+.prettierrc.cjs
+jest.config.cjs
+kubb.config.ts
+tsup.config.ts

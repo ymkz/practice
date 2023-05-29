@@ -1,0 +1,49 @@
+{
+  "name": "express-base",
+  "private": true,
+  "scripts": {
+    "dev": "tsup --watch --onSuccess 'node dist/index.mjs'",
+    "build": "tsup",
+    "start": "node dist/index.mjs",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "lint": "tsc --noEmit && prettier --check . && eslint",
+    "format": "prettier --write . && eslint --fix",
+    "generate": "kubb",
+    "docs:dev": "redocly preview-docs --host localhost --port 3001",
+    "docs:build": "redocly build-docs --output docs/index.html",
+    "docs:lint": "redocly lint"
+  },
+  "dependencies": {
+    "dayjs": "1.11.7",
+    "express": "4.18.2",
+    "express-prom-bundle": "6.6.0",
+    "pino": "8.11.0",
+    "pino-http": "8.3.3",
+    "prom-client": "14.2.0",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "@kubb/cli": "1.0.0-beta.14",
+    "@kubb/core": "1.0.0-beta.14",
+    "@kubb/swagger": "1.0.0-beta.14",
+    "@kubb/swagger-ts": "1.0.0-beta.14",
+    "@kubb/swagger-zod": "1.0.0-beta.14",
+    "@redocly/cli": "1.0.0-beta.125",
+    "@types/express": "4.17.17",
+    "@types/jest": "29.5.0",
+    "@types/node": "18.15.11",
+    "@types/supertest": "2.0.12",
+    "@typescript-eslint/eslint-plugin": "5.58.0",
+    "@typescript-eslint/parser": "5.58.0",
+    "esbuild-plugin-alias-path": "2.0.2",
+    "eslint": "8.38.0",
+    "eslint-config-prettier": "8.8.0",
+    "jest": "29.5.0",
+    "prettier": "2.8.7",
+    "supertest": "6.3.3",
+    "ts-jest": "29.1.0",
+    "tsup": "6.7.0",
+    "typescript": "5.0.4"
+  }
+}
