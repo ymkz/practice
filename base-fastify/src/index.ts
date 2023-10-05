@@ -1,37 +1,15 @@
-import { config } from '@fastify-base/config'
-import { fastify } from 'fastify'
-import fastifyMetrics from 'fastify-metrics'
-import { healthzController } from './controller/healthz'
-import { itemFindController } from './controller/item/find'
-import { itemSubmitController } from './controller/item/submit'
-import { logger } from './util/logger'
+import { register } from '~/register'
+import { logger } from '~/util/log'
 
-const run = async () => {
-  const app = fastify({ logger })
+try {
+  const app = await register()
 
-  await app.register(fastifyMetrics, {
-    routeMetrics: {
-      overrides: {
-        histogram: {
-          buckets: [0.5, 0.95, 0.99],
-        },
-        summary: {
-          percentiles: [0.5, 0.95, 0.99],
-        },
-      },
-    },
-  })
+  await app.ready()
+  await app.listen({ port: 4000 })
 
-  app.get('/healthz', healthzController)
-  app.get('/item/find', itemFindController)
-  app.post('/item/submit', itemSubmitController)
-
-  await app.listen({ port: 3000 })
-
-  logger.info(`config as ${config.env}`)
-}
-
-run().catch((err) => {
-  logger.fatal(err, 'server crashed')
+  logger.info(`NODE_ENV is ${process.env.NODE_ENV}`)
+  logger.info(`APP_ENV is ${process.env.APP_ENV}`)
+} catch (err) {
+  logger.fatal(err, `SERVER_CRASHED`)
   process.exit(1)
-})
+}

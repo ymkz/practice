@@ -1,7 +1,5 @@
 dist
 node_modules
 package-lock.json
-.eslintrc.cjs
-.prettierrc.cjs
-jest.config.cjs
-tsup.config.ts
+*.tsbuildinfo
+*.config.ts
