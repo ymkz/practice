@@ -1,6 +1,7 @@
 import { Head, Html, Main, NextScript } from 'next/document'
 
-const Document = () => {
+// biome-ignore lint/nursery/noDefaultExport: nextjs pages required default export
+export default function CustomDocument() {
   return (
     <Html lang="ja">
       <Head />
@@ -11,5 +12,3 @@ const Document = () => {
     </Html>
   )
 }
-
-export default Document
