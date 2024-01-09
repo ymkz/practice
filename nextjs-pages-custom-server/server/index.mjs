@@ -1,38 +1,33 @@
 import url from 'node:url'
 import express from 'express'
-import promBundle from 'express-prom-bundle'
 import next from 'next'
+import { healthcheckHandler } from './healthcheck.mjs'
+import { metricsMiddleware } from './metrics.mjs'
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
-const port = 3000
-const app = next({ dev, hostname, port })
-const handle = app.getRequestHandler()
+const appPort = 3000
+const metricsPort = 3001
+const nextServer = next({ dev, hostname, port: appPort })
+const handle = nextServer.getRequestHandler()
 
-app.prepare().then(() => {
-  const server = express()
-  server.use(
-    promBundle({
-      includePath: true,
-      includeMethod: true,
-      excludeRoutes: ['/healthz', '/favicon.ico', /\/_next/],
-      normalizePath: [],
-      percentiles: [0.5, 0.95, 0.99],
-      metricType: 'summary',
-      maxAgeSeconds: 300,
-      ageBuckets: 5,
-      promClient: { collectDefaultMetrics: {} },
-    }),
-  )
-  server.get('/healthz', (_, res) => {
-    return res.status(200).send('OK')
+nextServer.prepare().then(() => {
+  const app = express()
+  app.disable('x-powered-by')
+  app.use(metricsMiddleware)
+  app.use(healthcheckHandler)
+  app.all('*', (req, res) => handle(req, res, url.parse(req.url, true)))
+
+  const metrics = express()
+  metrics.disable('x-powered-by')
+  metrics.use(metricsMiddleware.metricsMiddleware)
+
+  app.listen(appPort, () => {
+    console.info(`> app ready on NODE_ENV=${process.env.NODE_ENV}`)
+    console.info(`> app ready on APP_ENV=${process.env.APP_ENV}`)
+    console.info(`> app ready on http://${hostname}:${appPort}`)
   })
-  server.all('*', (req, res) => {
-    return handle(req, res, url.parse(req.url, true))
-  })
-  server.listen(port, () => {
-    console.info(`> ready on NODE_ENV=${process.env.NODE_ENV}`)
-    console.info(`> ready on APP_ENV=${process.env.APP_ENV}`)
-    console.info(`> ready on http://${hostname}:${port}`)
+  metrics.listen(metricsPort, () => {
+    console.info(`> metrics ready on http://${hostname}:${metricsPort}/metrics`)
   })
 })
