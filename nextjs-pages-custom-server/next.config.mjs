@@ -4,5 +4,4 @@ const nextConfig = {
   poweredByHeader: false,
 }
 
-// biome-ignore lint/nursery/noDefaultExport: nextjs config required default export
 export default nextConfig

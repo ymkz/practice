@@ -5,7 +5,6 @@ export const getServerSideProps = () => {
   return { props: {} }
 }
 
-// biome-ignore lint/nursery/noDefaultExport: nextjs pages required default export
 export default function Page() {
   return (
     <>
