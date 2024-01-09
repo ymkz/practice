@@ -20,7 +20,7 @@ nextServer.prepare().then(() => {
 
   const metrics = express()
   metrics.disable('x-powered-by')
-  metrics.use(metricsMiddleware.metricsMiddleware)
+  metrics.get('/metrics', metricsMiddleware.metricsMiddleware)
 
   app.listen(appPort, () => {
     console.info(`> app ready on NODE_ENV=${process.env.NODE_ENV}`)
