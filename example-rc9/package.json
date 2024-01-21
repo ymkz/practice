@@ -1,0 +1,25 @@
+{
+  "name": "example-rc9",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsup --watch --onSuccess 'node dist/index.mjs'",
+    "build": "tsup",
+    "start": "node dist/index.mjs",
+    "lint": "tsc && biome check src",
+    "lint:fix": "tsc && biome check src --apply",
+    "test": "PROFILE=test vitest run"
+  },
+  "dependencies": {
+    "@hono/node-server": "1.4.1",
+    "hono": "3.12.6",
+    "rc9": "2.1.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.5.2",
+    "@types/node": "20.11.5",
+    "tsup": "8.0.1",
+    "typescript": "5.3.3",
+    "vitest": "1.2.1"
+  }
+}
